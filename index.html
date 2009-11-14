@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<!--[if gt IE 8]><!--><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><!--<![endif]-->
+<!--[if IE 8]><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="ie ie8"><![endif]-->
+<!--[if IE 7]><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="ie ie7"><![endif]-->
+<!--[if lte IE 6]><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="ie ie6"><![endif]-->
+
+<head>
+<title>events.frame</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="Site description" />
+<!-- Run IE8 in Compatibility Mode --><!--[if gte IE 8]><!--meta http-equiv="X-UA-Compatible" content="IE=7"--><![endif]-->
+<!-- Disable image toolbar in IE6 --><!--[if lte IE 6]><meta http-equiv="imagetoolbar" content="no" /><![endif]-->
+
+<link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+<link rel="stylesheet" type="text/css" href="../../css/reset.css" media="all" />
+<link rel="stylesheet" type="text/css" href="../../css/typography.css" media="all" />
+<link rel="stylesheet" type="text/css" href="../../css/style_light.css" media="all" />
+<link rel="stylesheet" type="text/css" href="../../css/header_light.css" media="all" />
+<style type="text/css">
+
+    h2,
+    h3,
+    p   { margin: 0 7% 1em 7%; }
+    
+    .one,
+    .two { width: 40%; margin-bottom: 2em; }
+    .one { float: left; margin-left: 7%; }
+    .two { float: right; margin-right: 7%; }
+    #one,
+    #two { text-align: center; font-size: 20em; font-family: Georgia, serif; line-height: 1.2em; height: 1.4em; color: #98989f; background: #eeeef1; margin-bottom: 24px; }
+</style>
+
+<script type="text/javascript">
+    document.documentElement.className+=' js';
+</script>
+
+</head>
+
+<body>
+
+<div id="header">
+    <a href="../../index.html"><h1>webdev.stephband.info</h1></a>
+</div>
+
+<h2>jquery.event.frame.js</h2>
+<h3>Download</h3>
+<p><a href="js/jquery.event.frame.js">webdev.stephband.info/events/frame/js/jquery.event.frame.js</a></p>
+<h3>What's this, then?</h3>
+<p>Provides an animation timer that fires <code>frame</code> events at bound elements. The timer starts the instant a <code>frame</code> event is bound (to any element), and stops after all events are unbound, so there is only ever one timer. Frame events are jQuery internal only.</p>
+<p>Besides the usual event properties, a <code>frame</code> event has 'frameCount'.  e.frameCount is reset to 0 whenever the timer is restarted.</p>
+
+<div class="one">
+    <a href="#start1"><code>.bind('frame')</code></a> |
+    <a href="#stop1"><code>.unbind('frame')</code></a>
+</div>
+
+<div class="two">
+    <a href="#start2"><code>.bind('frame')</code></a> |
+    <a href="#stop2"><code>.unbind('frame')</code></a>
+</div>
+
+<div id="one" class="one">
+    
+</div>
+
+<div id="two" class="two">
+    
+</div>
+
+<p style="clear: both;">You may have noticed that each <code>.bind</code> launches the timer at a different speed. Speed can be set by passing in a data object with the property <code>frameDuration: Int</code>. The default is 40 (25 frames/second). I've made this demo go a lot slower than that so you can see what is going on.</p>
+
+<script src="../js/jquery-nightly.js" type="text/javascript"></script>
+<script src="js/jquery.event.frame.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+    function handle(e){
+        e.data.elem.html(e.frameCount);
+    }
+    
+    jQuery(document).ready(function(){
+        
+        var one = jQuery("#one"),
+            two = jQuery("#two");
+
+        jQuery("a[href='#start1']")
+        .bind('click', function(e){
+            one.bind('frame', {elem: one, frameDuration: 600}, handle);
+        });
+
+        jQuery("a[href='#stop1']")
+        .bind('click', function(e){
+            one
+            .unbind('frame')
+            .html('');
+        });
+
+        jQuery("a[href='#start2']")
+        .bind('click', function(e){
+            two.bind('frame', {elem: two, frameDuration: 300}, handle);
+        });
+
+        jQuery("a[href='#stop2']")
+        .bind('click', function(e){
+            two
+            .unbind('frame')
+            .html('');
+        });
+    });
+
+</script>
+</body>
+</html>

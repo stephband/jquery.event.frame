@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>QUnit Test Suite</title>
+	<link rel="stylesheet" href="../../js/qunit/qunit.css" type="text/css" media="screen">
+</head>
+<body>
+	<h1 id="qunit-header">QUnit Test Suite</h1>
+	<h2 id="qunit-banner"></h2>
+	<div id="qunit-testrunner-toolbar"></div>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+    <script type="text/javascript" src="../js/jquery-nightly.js"></script>
+    <script type="text/javascript" src="js/jquery.event.frame.js"></script>
+	<script type="text/javascript" src="../../js/qunit/qunit.js"></script>
+	<script type="text/javascript">
+        
+        test('existence', function(){
+            ok(jQuery.event.special.frame, 'event.special.frame exists');
+        });
+
+        // Bind a frame, make it stop
+        var count;
+        jQuery("h1").bind('frame', {frameDuration: 1000}, function(e){
+            count = e.frameCount;
+            jQuery(this).unbind('frame');
+        });
+        
+        asyncTest("bind and count", 0, function() {
+            equals(count, 0, 'Fire frame immediately upon bind');
+            
+            stop();
+            
+            // Check first five frameCounts
+            var i = 0;
+            jQuery("h1").bind('frame', {frameDuration: 100}, function(e){
+                if (e.frameCount < 5) {
+                        console.log(e.frameCount);
+                        equals(e.frameCount, i, 'e.frameCount is '+i);
+                        i++;
+                }
+                else {
+                    jQuery(this).unbind('frame');
+                    start();
+                }
+            });
+        });
+	</script>
+</body>
+</html>
