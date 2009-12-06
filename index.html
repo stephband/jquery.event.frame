@@ -32,6 +32,10 @@
     .two { float: right; margin-right: 7%; }
     #one,
     #two { text-align: center; font-size: 20em; font-family: Georgia, serif; line-height: 1.2em; height: 1.4em; color: #98989f; background: #eeeef1; margin-bottom: 24px; }
+    
+    .container { margin-left: 7%; margin-right: 7%; }
+    .box { float: left; margin-right: 2%; width: 15%; text-align: center; font-size: 6em; font-family: Georgia, serif; line-height: 1.2em; height: 1.4em; color: #98989f; background: #eeeef1; margin-bottom: 24px; }
+    .last { margin-right: 0; }
 </style>
 
 <script type="text/javascript">
@@ -50,16 +54,16 @@
 <h3>Download</h3>
 <p><a href="http://github.com/stephband/jquery.event.frame/archives/master">github.com/stephband/jquery.event.frame/archives/master</a></p>
 <h3>What's this, then?</h3>
-<p>Provides an animation timer that fires <code>frame</code> events at bound elements. The timer starts the instant a <code>frame</code> event is bound (to any element), and stops after all events are unbound, so there is only ever one timer. Frame events are jQuery internal only, that is, they are not bound as browser native events.</p>
-<p>Besides the usual event properties, a <code>frame</code> event object has 'frameCount'.  e.frameCount is reset to 0 whenever the timer is restarted.</p>
+<p>Provides an animation timer that fires <code>frame</code> events at bound elements. The aim is to reduce the number of timers needed on pages that require a lot of frame-based animation. There is one central timer that starts the instant a <code>frame</code> event is bound (to any element), and stops after all events are unbound.</p>
+<p>Besides the usual event properties provided by jQuery, a <code>frame</code> event object has 'frameCount'.  <code>event.frameCount</code> is reset to 0 whenever the timer is restarted.</p>
 
 <div class="one">
-    <a href="#start1"><code>.bind('frame')</code></a> |
+    <a href="#start1"><code>.bind('frame', handler)</code></a> |
     <a href="#stop1"><code>.unbind('frame')</code></a>
 </div>
 
 <div class="two">
-    <a href="#start2"><code>.bind('frame')</code></a> |
+    <a href="#start2"><code>.bind('frame', handler)</code></a> |
     <a href="#stop2"><code>.unbind('frame')</code></a>
 </div>
 
@@ -73,16 +77,30 @@
 
 <p style="clear: both;">You may have noticed that each <code>.bind</code> launches the timer at a different speed. Speed can be set by passing in a data object with the property <code>frameDuration: Int</code>. The default is 40 (25 frames/second). I've made this demo go a lot slower than that so you can see what is going on.</p>
 
-<h3>History</h3>
+<h3>Namespaced frame events</h3>
+<p><strong>New in 1.1 &gt;</strong> Each new namespace declared with a <code>frame.namespace</code> event creates its own timer, allowing frames on different elements to run at different rates.  Click on the boxes to see what I mean...</p>
+
+<div class="container">
+    <div class="box red"></div>
+    <div class="box red"></div>
+    <div class="box blue"></div>
+    <div class="box blue"></div>
+    <div class="box both"></div>
+    <div class="box both last"></div>
+</div>
+
+<p>Currently multiple namespaced <code>frame</code> events are not supported.</p>
+
+<!--h3>History</h3>
 <h4>1.1</h4>
 <ul>
-    <li>Added support for namespaced timers: each bound namespace now sporks its own timer</li>
+    <li>Added support for namespaced timers: each bound namespace now sporks its own timer. Does not support multiple namespaces.</li>
     <li>Code re-factored</li>
 </ul>
 <h4>1.0</h4>
 <ul>
     <li>First release</li>
-</ul>
+</ul-->
 
 <h3>Projects using jquery.event.frame</h3>
 <ul>
@@ -97,7 +115,6 @@
 <script type="text/javascript">
 
     function handle(e){
-        console.log('HANDLE');
         e.data.elem.html(e.frameCount);
     }
     
@@ -127,6 +144,110 @@
         .bind('click', function(e){
             two
             .unbind('frame')
+            .html('');
+        });
+        
+        jQuery('.box.red')
+        .toggle(function(e){
+            var elem = jQuery(this);
+            
+            elem
+            .bind('frame.red', {frameDuration: 500}, function(e){
+                
+                jQuery(this)
+                .html( e.frameCount )
+                .css({
+                    background: '#d9cac1',
+                    color: '#a38472',
+                    opacity: 1
+                })
+                .stop()
+                .animate({
+                    opacity: 0
+                }, {
+                    duration: 500
+                })
+            });
+        }, function(e){
+            var elem = jQuery(this);
+            
+            elem
+            .unbind('frame.red')
+            .stop()
+            .css({
+                background: '#eeeef1',
+                opacity: 1
+            })
+            .html('');
+        });
+
+        jQuery('.box.blue')
+        .toggle(function(e){
+            var elem = jQuery(this);
+            
+            elem
+            .bind('frame.blue', {frameDuration: 750}, function(e){
+                
+                jQuery(this)
+                .html( e.frameCount )
+                .css({
+                    background: '#bcc9d6',
+                    color: '#7d91a4',
+                    opacity: 1
+                })
+                .stop()
+                .animate({
+                    opacity: 0
+                }, {
+                    duration: 750
+                })
+            });
+        }, function(e){
+            var elem = jQuery(this);
+            
+            elem
+            .unbind('frame.blue')
+            .stop()
+            .css({
+                background: '#eeeef1',
+                opacity: 1
+            })
+            .html('');
+        });
+    
+        jQuery('.box.both')
+        .toggle(function(e){
+            var elem = jQuery(this);
+            
+            elem
+            .bind('frame.green', {frameDuration: 1000}, function(e){
+                
+                jQuery(this)
+                .html( e.frameCount )
+                .css({
+                    background: '#cbd6bc',
+                    color: '#a1ad8f',
+                    opacity: 1
+                })
+                .stop()
+                .animate({
+                    opacity: 0
+                }, {
+                    duration: 750
+                })
+            });
+        }, function(e){
+            var elem = jQuery(this);
+            
+            console.log('CLICK');
+            
+            elem
+            .unbind('frame')
+            .stop()
+            .css({
+                background: '#eeeef1',
+                opacity: 1
+            })
             .html('');
         });
     });

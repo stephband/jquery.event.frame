@@ -2,8 +2,11 @@
 // 1.1
 // Stephen Band
 // 
-// Project home
-// webdev.stephband.info/events/frame
+// Project home:
+// webdev.stephband.info/events/frame/
+//
+// Source:
+// http://github.com/stephband/jquery.event.frame
 
 (function(jQuery){
 
@@ -24,7 +27,7 @@ function Timer( fn, fd ) {
     }
     
     this.frameDuration = fd || 25 ;
-    this.frameCount = 0 ;
+    this.frameCount = -1 ;
     this.start = function(){
         update();
         clock = setInterval(update, this.frameDuration);
@@ -94,7 +97,7 @@ function unspork( elem, name ) {
     // Stop and remove timer when no elems left
     if (array.length === 0) {
         timers[name].stop();
-        timers[name] = undefined;
+        delete timers[name];
     }
 }
 
