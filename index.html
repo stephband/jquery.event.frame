@@ -22,7 +22,9 @@
 
     h2,
     h3,
-    p   { margin: 0 7% 1em 7%; }
+    h4,
+    p,
+    ul   { margin: 0 7% 1em 7%; }
     
     .one,
     .two { width: 40%; margin-bottom: 2em; }
@@ -44,7 +46,7 @@
     <a href="../../index.html"><h1>webdev.stephband.info</h1></a>
 </div>
 
-<h2>jquery.event.frame.js</h2>
+<h2>jquery.event.frame</h2>
 <h3>Download</h3>
 <p><a href="http://github.com/stephband/jquery.event.frame/archives/master">github.com/stephband/jquery.event.frame/archives/master</a></p>
 <h3>What's this, then?</h3>
@@ -71,6 +73,22 @@
 
 <p style="clear: both;">You may have noticed that each <code>.bind</code> launches the timer at a different speed. Speed can be set by passing in a data object with the property <code>frameDuration: Int</code>. The default is 40 (25 frames/second). I've made this demo go a lot slower than that so you can see what is going on.</p>
 
+<h3>History</h3>
+<h4>1.1</h4>
+<ul>
+    <li>Added support for namespaced timers: each bound namespace now sporks its own timer</li>
+    <li>Code re-factored</li>
+</ul>
+<h4>1.0</h4>
+<ul>
+    <li>First release</li>
+</ul>
+
+<h3>Projects using jquery.event.frame</h3>
+<ul>
+    <li><a href="http://webdev.stephband.info/jparallax/">jParallax</a> (from version 1.0)</li>
+</ul>
+
 <h3>Reporting problems</h3>
 <p><a href="http://github.com/stephband/jquery.event.frame/issues">github.com/stephband/jquery.event.frame/issues</a></p>
 
@@ -79,6 +97,7 @@
 <script type="text/javascript">
 
     function handle(e){
+        console.log('HANDLE');
         e.data.elem.html(e.frameCount);
     }
     
