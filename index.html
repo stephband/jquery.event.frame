@@ -24,7 +24,8 @@
     h3,
     h4,
     p,
-    ul   { margin: 0 7% 1em 7%; }
+    ul,
+    pre   { margin: 0 7% 1em 7%; }
     
     .one,
     .two { width: 40%; margin-bottom: 2em; }
@@ -54,8 +55,7 @@
 <h3>Download</h3>
 <p><a href="http://github.com/stephband/jquery.event.frame/archives/master">github.com/stephband/jquery.event.frame/archives/master</a></p>
 <h3>What's this, then?</h3>
-<p>Provides an animation timer that fires <code>frame</code> events at bound elements. The aim is to reduce the number of timers needed on pages that require a lot of frame-based animation. There is one central timer that starts the instant a <code>frame</code> event is bound (to any element), and stops after all events are unbound.</p>
-<p>Besides the usual event properties provided by jQuery, a <code>frame</code> event object has 'frameCount'.  <code>event.frameCount</code> is reset to 0 whenever the timer is restarted.</p>
+<p>Provides an animation timer that fires <code>frame</code> events at bound elements. Originally developed for use in jParallax, the aim is to reduce the number of timers needed on pages that require a lot of frame-based animation. There is one central timer that starts the instant a <code>frame</code> event is bound (to any element), and stops after all events are unbound.</p>
 
 <div class="one">
     <a href="#start1"><code>.bind('frame', handler)</code></a> |
@@ -75,10 +75,14 @@
     
 </div>
 
-<p style="clear: both;">You may have noticed that each <code>.bind</code> launches the timer at a different speed. Speed can be set by passing in a data object with the property <code>frameDuration: Int</code>. The default is 40 (25 frames/second). I've made this demo go a lot slower than that so you can see what is going on.</p>
+<p style="clear: both;">Besides the usual event properties provided by jQuery, a <code>frame</code> event object has the property <code>event.frameCount</code>, which is, very simply, the frame's number, starting from 0. Unbinding all frames resets <code>frameCount</code> to 0.</p>
+
+<p style="clear: both;">Note that each <code>.bind</code> launches the timer at a different speed. Speed can be set by passing a data object with the property <code>frameDuration: Int</code> into the <code>.bind</code>. The default is 40 (25 frames/second), but I made this demo go a lot slower than that so you can see what is going on:</p>
+
+<pre>jQuery('.box').bind('frame', {frameDuration: 600}, fn)</pre>
 
 <h3>Namespaced frame events</h3>
-<p><strong>New in 1.1 &gt;</strong> Each new namespace declared with a <code>frame.namespace</code> event creates its own timer, allowing frames on different elements to run at different rates.  Click on the boxes to see what I mean...</p>
+<p><strong>New in 1.1 &gt;</strong> Each new namespace bound with a <code>frame.namespace</code> event now creates its own timer. This allows, as an example, <code>frame</code> events from different plugins to run at different rates.  Click on the boxes to see what I mean...</p>
 
 <div class="container">
     <div class="box red"></div>
@@ -108,6 +112,7 @@
 </ul>
 
 <h3>Reporting problems</h3>
+<p>Please use the issue tracker at GitHub:</p>
 <p><a href="http://github.com/stephband/jquery.event.frame/issues">github.com/stephband/jquery.event.frame/issues</a></p>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript"></script>
@@ -239,10 +244,8 @@
         }, function(e){
             var elem = jQuery(this);
             
-            console.log('CLICK');
-            
             elem
-            .unbind('frame')
+            .unbind('frame.green')
             .stop()
             .css({
                 background: '#eeeef1',
