@@ -8,10 +8,9 @@
 // Source:
 // http://github.com/stephband/jquery.event.frame
 
-(function(jQuery){
+(function(jQuery, undefined){
 
-var undefined,
-    timers = {};
+var timers = {};
 
 
 // Timer constructor
