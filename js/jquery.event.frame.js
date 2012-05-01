@@ -123,9 +123,9 @@ jQuery.event.special.frame = {
     setup: function(data, namespaces) {},
     // Fires every time event is bound
     add: function(handler, data, namespaces){
-        console.log('ADD');
+        //console.log('ADD');
         
-        var l = namespaces.length;
+        var l = namespaces && namespaces.length;
         
         // No namespaces, so spork master timer
         if (!l) {
@@ -140,9 +140,9 @@ jQuery.event.special.frame = {
     },
     // Fires every time event is unbound
     remove: function(namespaces){
-        console.log('REMOVE');
+        //console.log('REMOVE');
         
-        var l = namespaces.length;
+        var l = namespaces && namespaces.length;
         
         // No namespaces, so unspork from all timers
         if (!l) {
